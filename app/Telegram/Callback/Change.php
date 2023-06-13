@@ -60,7 +60,7 @@ class Change
     {
         $keyboard = [];
         $ite = 0;
-        for($i = 1; $i < Carbon::parse($this->user->params['date[0]'])->daysInMonth; $i++){
+        for($i = 1; $i <= Carbon::parse($this->user->params['date[0]'])->daysInMonth; $i++){
             if(($i % 3) == 0){
                 $ite++;
             }

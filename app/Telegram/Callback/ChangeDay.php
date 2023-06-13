@@ -22,6 +22,5 @@ class ChangeDay extends Change
             'chat_id' => $this->message->callback_query->message->chat->id,
             'text' => 'Спасибо! Дата вылета настроена, Теперь можно проверить цену билетов на этот день. Выполните команду /check',
         ]);
-dd($this->user->params);
     }
 }

@@ -40,7 +40,7 @@ class CheckCommand extends Command
 
         if(empty($messages)){
             $this->replyWithMessage([
-                'text' => 'На эту дату рейсы не найдены.',
+                'text' => 'На эту дату рейсы не найдены. Выполните /settings что бы изменить параметры поиска',
             ]);
         }else{
             foreach ($messages as $message){

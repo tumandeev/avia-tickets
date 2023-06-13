@@ -16,7 +16,6 @@ class TicketsDataController extends Controller
                new CallBackQuery($item->callback_query?->data, $item);
            }
         }
-        dd($response);
 
     }
 }
