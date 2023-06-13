@@ -2,6 +2,7 @@
 
 namespace App\Telegram\Commands;
 
+use App\Models\User;
 use App\Services\TicketsDataService;
 use Telegram\Bot\Api;
 
@@ -14,7 +15,8 @@ class CheckCommand extends Command
     protected string $description = 'Проверить рейсы на выбранную дату';
     public function handle()
     {
-        $ticketService = new TicketsDataService();
+
+        $ticketService = new TicketsDataService(User::where('tg_id',$this->update->message->from->id)->first());
         $messages = [];
         foreach ($ticketService->getData() as $tickets){
             foreach ($tickets as $ticket){
@@ -35,10 +37,17 @@ class CheckCommand extends Command
             }
         }
 
-        foreach ($messages as $message){
+
+        if(empty($messages)){
             $this->replyWithMessage([
-                'text' => $message,
+                'text' => 'На эту дату рейсы не найдены.',
             ]);
+        }else{
+            foreach ($messages as $message){
+                $this->replyWithMessage([
+                    'text' => $message,
+                ]);
+            }
         }
     }
 }

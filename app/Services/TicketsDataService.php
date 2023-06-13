@@ -2,28 +2,22 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
 class TicketsDataService
 {
+
+    protected User $user;
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
     public function getData()
     {
-        $body = [
-            "searchGroupId" => "standard",
-            "segmentsCount" => 1,
-            "date[0]" => "25.09.2023",
-            "origin-city-code[0]" => "ULY",
-            "destination-city-code[0]" => "MOW",
-            "origin-port-code[0]" => "ULY",
-            "adultsCount" => 1,
-            "youngAdultsCount" => 0,
-            "childrenCount" => 0,
-            "infantsWithSeatCount" => 0,
-            "infantsWithoutSeatCount" => 0,
-            "search-engine" => "aviasales",
-            "redirect-id" => "jeyf16yblogw"
-        ];
+        $body = $this->user->params;
 
         $headers = [
             "Accept-Language" =>  "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -45,7 +39,9 @@ class TicketsDataService
     public function convertData($data)
     {
         $flights = [];
-
+        if(empty($data['flights'])){
+            return [];
+        }
         foreach ($data['flights'] as $_flight){
             foreach($_flight['flights'] as $flight){
 

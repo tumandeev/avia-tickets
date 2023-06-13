@@ -4,14 +4,8 @@ namespace App\Telegram\Commands;
 
 use App\Models\TicketData;
 use App\Models\User;
-use App\Services\TicketsDataService;
-use Telegram\Bot\Api;
-
 use Telegram\Bot\Commands\Command;
 use Telegram\Bot\Keyboard\Keyboard;
-use Telegram\Bot\Laravel\Facades\Telegram;
-use Telegram\Bot\Objects\Update;
-
 class StartCommand extends Command
 {
     protected string $name = 'start';
@@ -49,10 +43,12 @@ class StartCommand extends Command
             'one_time_keyboard' => true,
         ]);
         $reply_markup->inline();
+        $reply_markup->remove();
 
         $this->replyWithMessage([
             'text' => 'Привет! Пока бот умеет мониторть рейсы только из Ульяновска в москву, но позже обязательно научится выбирать любые направления.',
-        ]);
+
+            ]);
 
         $this->replyWithMessage([
             'text' => 'А пока. Выберите дату: год',
