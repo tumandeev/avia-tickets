@@ -19,7 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'tg_id',
+        'tg_action',
         'email',
+        'params',
         'password',
     ];
 
@@ -41,5 +44,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'params' => 'json',
     ];
 }
