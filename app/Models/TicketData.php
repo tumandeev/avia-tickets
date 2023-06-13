@@ -46,6 +46,7 @@ class TicketData extends Model
         'departuredate' => 'date',
         'arrivaltime' => 'datetime',
         'arrivaldate' => 'date',
+        'data' => 'json',
     ];
     protected $fillable = [
         'owner_query_id',

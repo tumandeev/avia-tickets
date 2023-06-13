@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property array $params
+ * @property boolean $send_if_price_not_changed
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -24,6 +28,7 @@ class User extends Authenticatable
         'email',
         'params',
         'password',
+        'send_if_price_not_changed',
     ];
 
     /**
@@ -45,5 +50,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'params' => 'json',
+        'send_if_price_not_changed' => 'boolean',
     ];
+
+    public function getHashParams(): string
+    {
+        return md5(print_r($this->params, true));
+    }
 }

@@ -22,5 +22,38 @@ class ChangeDay extends Change
             'chat_id' => $this->message->callback_query->message->chat->id,
             'text' => 'Спасибо! Дата вылета настроена, Теперь можно проверить цену билетов на этот день. Выполните команду /check',
         ]);
+
+        Telegram::sendMessage([
+            'chat_id' => $this->message->callback_query->message->chat->id,
+            'text' => 'Бот будет автоматически опрашивать сайт победы каждые 30 минут, и если цена изменится,  вы получите уведомление.',
+        ]);
+
+
+
+        $keyboard = [
+            [
+                Keyboard::inlineButton([
+                    'text' => 'Да',
+                    'callback_data' => 'Change-NotifyIfNotCHanged-1'
+                ]),
+
+                Keyboard::inlineButton([
+                    'text' => 'Нет',
+                    'callback_data' => 'Change-NotifyIfNotCHanged-0'
+                ]),
+            ]
+        ];
+
+        $reply_markup = Keyboard::make([
+            'inline_keyboard' => $keyboard,
+            'resize_keyboard' => true,
+            'one_time_keyboard' => true,
+        ]);
+
+        Telegram::sendMessage([
+            'chat_id' => $this->message->callback_query->message->chat->id,
+            'text' => 'Уведомлять если цена не изменилась?',
+            'reply_markup' => $reply_markup
+        ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\TicketData;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class TicketsDataService
@@ -61,12 +63,12 @@ class TicketsDataService
                     return $arr['requestedBrands'] == 'MX';
                 }));
 
-                $flights[$flight['date']][$flight['id']] = [
+                $resultData = [
                     'raceCode' => "$flight[carrier] $flight[racenumber]",
                     'prices' => [
-                      'ST' => $costST['price'],
-                      'AD' => $costAD['price'],
-                      'MX' => $costMX['price'],
+                        'ST' => $costST['price'],
+                        'AD' => $costAD['price'],
+                        'MX' => $costMX['price'],
                     ],
 
                     'departuretime' => $flight['departuretime'],
@@ -79,9 +81,35 @@ class TicketsDataService
                     'origincityName' => $flight['origincityName'],
                     'destinationcityName' => $flight['destinationcityName'],
                 ];
+                $flights[$flight['date']][$flight['id']] = $resultData;
             }
         }
 
         return $flights;
+    }
+
+
+    public function saveData($data): void
+    {
+
+        $dataHistory = TicketData::where('query_hash', $this->user->getHashParams())
+            ->where('departuretime',  Carbon::parse($data['departuredate'] . ' ' . $data['departuretime']))
+            ->where('created_at','>' , now()->subMinutes(20))
+            ->exists();
+
+        if($dataHistory) return;
+
+
+        $ticketData = new TicketData;
+
+        $ticketData->fill($data);
+        $ticketData->query_hash = $this->user->getHashParams();
+        $ticketData->departuretime = Carbon::parse($data['departuredate'] . ' ' . $data['departuretime']);
+        $ticketData->price_st = $data['prices']['ST'];
+        $ticketData->price_ad = $data['prices']['AD'];
+        $ticketData->price_mx = $data['prices']['MX'];
+        $ticketData->owner_query_id = $this->user->getKey();
+        $ticketData->data = $this->user->params;
+        $ticketData->save();
     }
 }
