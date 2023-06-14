@@ -12,8 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('run:bot')->withoutOverlapping();
+        $schedule->command('compare:prices')->everyThirtyMinutes()->between('4:00', '18:00');;
     }
 
     /**
