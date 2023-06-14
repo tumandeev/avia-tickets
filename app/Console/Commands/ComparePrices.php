@@ -15,7 +15,7 @@ class ComparePrices extends Command
     protected $signature = 'compare:prices';
 
     public function handle()
-    {
+    {           
         User::query()->chunk(50, function ($chunk){
             $chunk->each(function ($user){
                 /** @var User $user */
