@@ -17,7 +17,7 @@ class ChangeMonth extends Change
         $this->user->save();
 
 
-//        $this->deleteOldMessage();
+        $this->deleteOldMessage();
 
 
         $keyboard = $this->generateDayKeyboard();

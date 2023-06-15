@@ -17,26 +17,36 @@ class CalendarKeyboard
 
     public function generate()
     {
-        $ite = 1;
-        $keyboard[] = $this->getWeekDays();
-        $firstDay = Carbon::parse($this->user->params['date[0]'])->startOfMonth()->weekday();
+
+        $currentDate = Carbon::parse($this->user->params['date[0]']);
+
+
+
+        $ite = 2;
+        $keyboard[0] = [Keyboard::inlineButton([
+            'text' => $currentDate->locale('ru')->monthName . " " . $currentDate->locale('ru')->year,
+            'callback_data' => 'Change-Year-' . $currentDate->locale('ru')->year
+        ])];
+        $keyboard[1] = $this->getWeekDays();
+        $firstDay = $currentDate->startOfMonth()->weekday();
         $firstDay = $firstDay == 0 ? 6 : --$firstDay;
         $keyboard[$ite] = $this->getFirstWeekDays($firstDay);
 
         $iteDay = 1;
-        for($i = $firstDay + 1 ; $i <= Carbon::parse($this->user->params['date[0]'])->daysInMonth; $i++){
+        for($i = $firstDay + 1 ; $iteDay <= $currentDate->daysInMonth; $i++){
             $keyboard[(int)$ite][] = Keyboard::inlineButton([
-                'text' => $iteDay,
+                'text' => sprintf('%02d', $iteDay),
                 'callback_data' => 'Change-Day-' . sprintf('%02d', $iteDay)
             ]);
             if(($i % 7) == 0){
                 $ite++;
             }
             if($i == 7){
-                $ite = 2;
+                $ite = 3;
             }
             $iteDay++;
         }
+
         $this->fillLastElement($keyboard);
 
         return $keyboard;
@@ -62,6 +72,7 @@ class CalendarKeyboard
     {
         $lastItemKey = Arr::last(array_keys($keyboard));
         $countElems = 7 - count($keyboard[$lastItemKey]);
+        if($countElems <= 0) return;
         for($i = $countElems - 1; $i <= 6; $i++){
             $keyboard[$lastItemKey][$i] = Keyboard::inlineButton([
                 'text' => '-',
