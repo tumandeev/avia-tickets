@@ -87,7 +87,7 @@ services:
 
   npm:
     image: node:latest
-    container_name: market-npm
+    container_name: tickets-npm
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html

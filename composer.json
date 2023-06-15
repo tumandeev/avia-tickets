@@ -9,7 +9,7 @@
         "fabpot/goutte": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "irazasyed/telegram-bot-sdk": "^3.13",
-        "laravel/framework": "^10.10",
+        "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "masterminds/html5": "^2.8",

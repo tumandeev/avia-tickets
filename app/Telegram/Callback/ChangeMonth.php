@@ -3,6 +3,7 @@
 namespace App\Telegram\Callback;
 
 use App\Models\User;
+use App\Telegram\MarkUp\CalendarKeyboard;
 use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\Update;
@@ -16,12 +17,13 @@ class ChangeMonth extends Change
         $this->user->save();
 
 
-        $this->deleteOldMessage();
+//        $this->deleteOldMessage();
 
 
         $keyboard = $this->generateDayKeyboard();
-
-
+        $keyboard = new CalendarKeyboard($this->user);
+        $keyboard = $keyboard->generate();
+dump($keyboard);
         $reply_markup = Keyboard::make([
             'inline_keyboard' => $keyboard,
             'resize_keyboard' => true,
