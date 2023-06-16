@@ -86,8 +86,7 @@ class ChangeYear extends Change
             'one_time_keyboard' => true,
         ]);
 
-        Telegram::sendMessage([
-            'chat_id' => $this->message->callback_query->message->chat->id,
+        $this->replyWithMessage([
             'text' => 'Выберите дату: месяц',
             'reply_markup' => $reply_markup
         ]);

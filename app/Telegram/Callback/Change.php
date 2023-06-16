@@ -8,18 +8,8 @@ use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\Update;
 
-class Change
+class Change extends AbstractCallback
 {
-    protected Update $message;
-    protected string $argument;
-    protected User $user;
-    public function __construct($message, $argument)
-    {
-        $this->message = $message;
-        $this->argument = $argument;
-        $this->user = User::where('tg_id',$this->message->callback_query->from->id)->first();
-    }
-
     protected function setYearParams($params, $value)
     {
         $date = explode('.',$params['date[0]']);
@@ -46,14 +36,6 @@ class Change
         $date = implode('.',$date);
         $params['date[0]'] = $date;
         return $params;
-    }
-
-    protected function deleteOldMessage(): void
-    {
-        Telegram::deleteMessage([
-            'message_id' => $this->message->callback_query->message->message_id,
-            'chat_id' => $this->message->callback_query->message->chat->id,
-        ]);
     }
 
     protected function generateDayKeyboard()

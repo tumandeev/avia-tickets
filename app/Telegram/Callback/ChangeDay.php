@@ -50,8 +50,7 @@ class ChangeDay extends Change
             'one_time_keyboard' => true,
         ]);
 
-        Telegram::sendMessage([
-            'chat_id' => $this->message->callback_query->message->chat->id,
+        $this->replyWithMessage([
             'text' => 'Уведомлять если цена не изменилась?',
             'reply_markup' => $reply_markup
         ]);

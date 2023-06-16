@@ -13,8 +13,7 @@ class ChangeNotifyIfNotCHanged extends Change
         $this->user->send_if_price_not_changed = $argument;
         $this->user->save();
         $this->deleteOldMessage();
-        Telegram::sendMessage([
-            'chat_id' => $this->message->callback_query->message->chat->id,
+        $this->replyWithMessage([
             'text' => 'Настройки успешно сохранены',
         ]);
     }

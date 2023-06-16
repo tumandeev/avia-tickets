@@ -19,19 +19,16 @@ class ChangeMonth extends Change
 
         $this->deleteOldMessage();
 
-
-        $keyboard = $this->generateDayKeyboard();
         $keyboard = new CalendarKeyboard($this->user);
         $keyboard = $keyboard->generate();
-dump($keyboard);
+
         $reply_markup = Keyboard::make([
             'inline_keyboard' => $keyboard,
             'resize_keyboard' => true,
             'one_time_keyboard' => true,
         ]);
 
-        Telegram::sendMessage([
-            'chat_id' => $this->message->callback_query->message->chat->id,
+        $this->replyWithMessage([
             'text' => 'Выберите дату: День',
             'reply_markup' => $reply_markup
         ]);

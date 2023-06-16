@@ -35,6 +35,16 @@ class SettingsCommand extends Command
         ];
 
 
+        $keyboard = [
+            [
+                Keyboard::inlineButton([
+                    'text' => 'Создать профиль',
+                    'callback_data' => 'Create-Profile-new'
+                ]),
+            ],
+        ];
+
+
         $reply_markup = Keyboard::make([
             'inline_keyboard' => $keyboard,
             'resize_keyboard' => true,

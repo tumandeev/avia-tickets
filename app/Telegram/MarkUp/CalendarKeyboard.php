@@ -70,15 +70,19 @@ class CalendarKeyboard
 
     private function fillLastElement(&$keyboard)
     {
+
         $lastItemKey = Arr::last(array_keys($keyboard));
         $countElems = 7 - count($keyboard[$lastItemKey]);
+
         if($countElems <= 0) return;
-        for($i = $countElems - 1; $i <= 6; $i++){
+
+        for($i = count($keyboard[$lastItemKey]); $i <= 6; $i++){
             $keyboard[$lastItemKey][$i] = Keyboard::inlineButton([
                 'text' => '-',
                 'callback_data' => 'Change-Day'
             ]);
         }
+
     }
     private function getWeekDays(): array
     {
